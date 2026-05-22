@@ -14,7 +14,7 @@ public class Day {
 
     public String getTemp() {
 
-        return this.Temp + "*";
+        return this.Temp + "\u00B0";
 
     }
 }

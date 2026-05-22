@@ -1,7 +1,5 @@
 package com.example.pr29.viewmodels;
 
-import android.os.Build;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,10 +10,10 @@ import com.example.pr29.datas.callbacks.MyResponseCallback;
 import com.example.pr29.domains.models.Day;
 import com.google.gson.GsonBuilder;
 
-import java.net.ResponseCache;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +30,7 @@ public class DayViewModel extends ViewModel {
 
     public DayViewModel() {
 
-        WeatherApi weatherApi = new WeatherApi(58,56, ResponseWeather);
+        WeatherApi weatherApi = new WeatherApi(58, 56, ResponseWeather);
         weatherApi.execute();
 
     }
@@ -59,7 +57,7 @@ public class DayViewModel extends ViewModel {
             }
 
             _days.setValue(daysList);
-            _nowTemp.setValue(weatherResponse.fact.temp + "*");
+            _nowTemp.setValue(weatherResponse.fact.temp + "\u00B0");
             _condition.setValue(weatherResponse.fact.condition);
         }
 
@@ -81,12 +79,14 @@ public class DayViewModel extends ViewModel {
 
     public String getDayOfWeek(String dateString) {
 
-        LocalDate date = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            date = LocalDate.parse(dateString);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return date.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("en"));
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE", Locale.US);
+
+        try {
+            Date date = inputFormat.parse(dateString);
+            return date == null ? dateString : outputFormat.format(date);
+        } catch (ParseException e) {
+            return dateString;
         }
 
     }

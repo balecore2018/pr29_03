@@ -9,7 +9,7 @@ import java.util.List;
 
 public class BindingAdapters {
 
-    @BindingAdapter("app:days")
+    @BindingAdapter("days")
 
     public static void setDays(RecyclerView recyclerView, List<Day> days) {
 

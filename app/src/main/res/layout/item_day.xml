@@ -13,53 +13,60 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="63dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/dayName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_light"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@drawable/roboto_light"
+            android:includeFontPadding="false"
             android:text="@{day.Name}"
             android:textColor="@color/white"
             android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/temp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Monday"/>
+            tools:text="Thursday"/>
 
         <TextView
+            android:id="@+id/temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/temp"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@drawable/roboto_light"
+            android:includeFontPadding="false"
             android:text="@{day.getTemp()}"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="17 градусав"/>
+            tools:text="16°"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/condition"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@drawable/roboto_light"
+            android:gravity="end"
+            android:includeFontPadding="false"
             android:text="@{day.Condition}"
-            android:textColor="#958F9A"
+            android:textColor="#C6BFCA"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/temp"
-            tools:text="Cloudy"/>
+            app:layout_constraintStart_toEndOf="@+id/dayName"
+            app:layout_constraintTop_toBottomOf="@+id/temp"
+            tools:text="partly-cloudy"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <View
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#958F9A"
+            android:alpha="0.7"
+            android:background="#C6BFCA"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
