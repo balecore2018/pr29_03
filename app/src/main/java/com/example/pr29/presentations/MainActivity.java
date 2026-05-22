@@ -7,18 +7,27 @@ import androidx.activity.SystemBarStyle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.pr29.R;
+import com.example.pr29.datas.databases.DbContext;
+import com.example.pr29.datas.databases.WeatherContext;
+import com.example.pr29.datas.workers.WeatherWorker;
 import com.example.pr29.databinding.ActivityMainBinding;
 import com.example.pr29.viewmodels.DayViewModel;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     DayViewModel viewModel;
     DayAdapter adapter;
+    DbContext context;
 
 
     @Override
@@ -29,11 +38,19 @@ public class MainActivity extends AppCompatActivity {
                 SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
                 SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
         );
+
+        context = new DbContext(this);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel = new ViewModelProvider(this).get(DayViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
         setupRecyclerView();
+
+        if (WeatherContext.allDays().isEmpty()) {
+            onStartWorkerNow();
+        }
+        onStartWorker();
     }
 
 
@@ -64,5 +81,26 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    public void onStartWorker() {
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
+                WeatherWorker.class,
+                15, TimeUnit.MINUTES,
+                30, TimeUnit.SECONDS
+        ).build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "WORKER_MANAGER",
+                ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+        );
+    }
+
+    public void onStartWorkerNow() {
+        OneTimeWorkRequest immediateWork = new OneTimeWorkRequest.Builder(WeatherWorker.class)
+                .build();
+
+        WorkManager.getInstance(this).enqueue(immediateWork);
     }
 }

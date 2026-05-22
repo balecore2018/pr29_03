@@ -44,6 +44,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'org.jsoup:jsoup:1.22.1'
     implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'androidx.work:work-runtime:2.9.0'
 
     implementation libs.activity.ktx
     implementation libs.appcompat
